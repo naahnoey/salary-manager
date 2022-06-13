@@ -9,8 +9,23 @@ import javax.swing.border.LineBorder;
 
 public class EmployeeDetail extends JFrame{
 
-	public EmployeeDetail() {
-		super("월급 관리 프로그램 (직원)");
+	//직원 객체에서 받아온 정보
+	String name = null;	//이름
+	int age = 0;	//나이
+	String day = null;	//출근 요일
+	String hour = null;	//노동 시간
+	String earlyLeave = null;	//조퇴
+	String overtime = null;	//초과근무
+	int sal = 0;	//월급
+	
+	public EmployeeDetail(String id) {
+		//데이터베이스에서 id 일치하는 직원 정보 불러와 각각의 멤버변수에 저장
+		
+		drawPanel();
+	}
+	
+	public void drawPanel() {
+		setTitle("월급 관리 프로그램 (직원)");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(680, 550);
 		setLocationRelativeTo(this);
@@ -29,8 +44,9 @@ public class EmployeeDetail extends JFrame{
 		infoEmployee2.setBounds(30, 270, 600, 100);
 		
 		//월급
-		JLabel salL = new JLabel("예상 월급: 000000원");
-		salL.setBounds(500, 380, 200, 50);
+		JLabel salL = new JLabel("예상 월급: " + sal + "원");
+		salL.setFont(new Font("고딕", Font.BOLD, 16));
+		salL.setBounds(470, 380, 200, 50);
 		
 		//로그아웃 버튼
 		JButton logoutB = new JButton("로그아웃");
@@ -50,7 +66,6 @@ public class EmployeeDetail extends JFrame{
 	class InfoEmployee extends JPanel {
 		
 		public InfoEmployee() {
-			String name, age, day, hour;	//직원 객체에서 받아온 정보
 			Font font = new Font("고딕", Font.BOLD, 16);
 			LineBorder lb = new LineBorder(Color.BLACK, 1, true);
 			
@@ -81,10 +96,10 @@ public class EmployeeDetail extends JFrame{
 			//각 목록에 대한 직원 상세 정보
 			JPanel infoP = new JPanel();
 			infoP.setLayout(new GridLayout(0, 1, 0, -1));
-			JLabel infoNameL = new JLabel(" 홍길동");
-			JLabel infoAgeL = new JLabel(" 23");
-			JLabel infoDayL = new JLabel(" 월, 수");
-			JLabel infoHourL = new JLabel(" 5시간");
+			JLabel infoNameL = new JLabel(" " + name);
+			JLabel infoAgeL = new JLabel(" " + age);
+			JLabel infoDayL = new JLabel(" " + day);
+			JLabel infoHourL = new JLabel(" " + hour);
 			infoNameL.setFont(font);
 			infoAgeL.setFont(font);
 			infoDayL.setFont(font);
@@ -108,7 +123,6 @@ public class EmployeeDetail extends JFrame{
 	class InfoEmployee2 extends JPanel {
 		
 		public InfoEmployee2() {
-			String earlyLeave, overtime;	//직원 객체에서 받아온 정보
 			Font font = new Font("고딕", Font.BOLD, 16);
 			LineBorder lb = new LineBorder(Color.BLACK, 1, true);
 			
@@ -133,8 +147,8 @@ public class EmployeeDetail extends JFrame{
 			//각 목록에 대한 직원 상세 정보
 			JPanel infoP = new JPanel();
 			infoP.setLayout(new GridLayout(0, 1, 0, -1));
-			JLabel infoEarlyLeaveL = new JLabel(" 월요일 -3시간");
-			JLabel infoOvertimeL = new JLabel(" 수요일 +3시간");
+			JLabel infoEarlyLeaveL = new JLabel(" " + earlyLeave);
+			JLabel infoOvertimeL = new JLabel(" " + overtime);
 			infoEarlyLeaveL.setFont(font);
 			infoOvertimeL.setFont(font);
 			
@@ -151,7 +165,7 @@ public class EmployeeDetail extends JFrame{
 	}
 	
 	//직원 이미지
-	class EmployeeImage extends JPanel {
+	class EmployeeImage extends JPanel {	//BLOB으로 변경
 		private ImageIcon ii;
 		private Image image;
 		
