@@ -18,8 +18,15 @@ public class EmployeeDetail extends JFrame{
 	String overtime = null;	//초과근무
 	int sal = 0;	//월급
 	
+	public EmployeeDetail() {//아무 직원도 선택되지 않았을 때
+		this(null);
+	}
+	
 	public EmployeeDetail(String id) {
 		//데이터베이스에서 id 일치하는 직원 정보 불러와 각각의 멤버변수에 저장
+		if (id != null) {
+			
+		}
 		
 		drawPanel();
 	}
