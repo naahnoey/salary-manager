@@ -7,7 +7,7 @@ import javax.swing.border.LineBorder;
 //직원 화면
 //자신의 정보 조회 가능 (수정 불가)
 
-public class EmployeeDetail extends JFrame{
+public class EmployeeDetail extends JPanel{
 
 	//직원 객체에서 받아온 정보
 	String name = null;	//이름
@@ -32,10 +32,7 @@ public class EmployeeDetail extends JFrame{
 	}
 	
 	public void drawPanel() {
-		setTitle("월급 관리 프로그램 (직원)");
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(680, 550);
-		setLocationRelativeTo(this);
 		setLayout(null);	//레이아웃 제거
 		
 		//직원 이미지
