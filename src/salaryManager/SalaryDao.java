@@ -12,7 +12,7 @@ import java.util.List;
 // 노션 링크: https://equatorial-spring-619.notion.site/Dao-d19cd0ae6bbc4c28a0a259445c4de298
 // 주요 기능: 조회 기능, 삽입 기능
 
-public class salaryDao {
+public class SalaryDao {
 
 	String driver = "com.mysql.cj.jdbc.Driver";
 	String url = "jdbc:mysql://localhost:3306/salarymanagement";
@@ -22,7 +22,7 @@ public class salaryDao {
 	Connection conn = null;
 	PreparedStatement pstmt = null;
 	ResultSet rs = null;
-
+	
 //	1. 조회기능
 //	1-1 사장 조회
 	public ResultSet managerInquiry() {
