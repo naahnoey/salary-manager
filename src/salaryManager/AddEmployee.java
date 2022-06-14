@@ -94,7 +94,6 @@ public class AddEmployee extends JDialog {
 						return;
 					}
 					String account = accountT.getText();
-					int hourlyWage = Integer.parseInt(hourlyWageT.getText());
 					int workingHour = Integer.parseInt(workingHourT.getText());
 					
 					//데이터베이스에 직원 정보 입력
