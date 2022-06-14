@@ -22,7 +22,8 @@ public class SalaryDao {
 	Connection conn = null;
 	PreparedStatement pstmt = null;
 	ResultSet rs = null;
-	
+	int irs;
+
 //	1. 조회기능
 //	1-1 사장 조회
 	public ResultSet managerInquiry() {
@@ -76,20 +77,23 @@ public class SalaryDao {
 			String query1 = "INSERT INTO employee (enum, ename, job, hire, account) VALUES (?, ?, ?, ?, ?)";
 			String query2 = "INSERT INTO labor (enum, workingHours) VALUES (?, ?)";
 
+//			(INSERT, DELECT 등)의 쿼리: .execute() 혹은 .executeUpdate() 사용
+//			얘들은 int값 아니면 boolean을 리턴하므로 rs를 상황에 따라 바꾼다. 
+
 			pstmt = conn.prepareStatement(query1);
 			pstmt.setString(1, employee_number);
 			pstmt.setString(2, ename);
 			pstmt.setString(3, job);
 			pstmt.setString(4, hire);
 			pstmt.setString(5, account);
-			rs = pstmt.executeQuery();
+			irs = pstmt.executeUpdate();
 
 			pstmt = conn.prepareStatement(query2);
 			pstmt.setString(1, employee_number);
 			pstmt.setInt(2, workingHours);
-			rs = pstmt.executeQuery();
+			irs = pstmt.executeUpdate();
 
-			return 1;
+			return irs;
 
 		} catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block
@@ -119,7 +123,7 @@ public class SalaryDao {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, quitDate);
 			pstmt.setString(2, employee_number);
-			rs = pstmt.executeQuery();
+			irs = pstmt.executeUpdate();
 
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -127,7 +131,7 @@ public class SalaryDao {
 		}
 
 	}
-	
+
 //	2-2-2 월급통장 수정
 	public void editAccount(String employee_number, String account) {
 
@@ -138,7 +142,7 @@ public class SalaryDao {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, account);
 			pstmt.setString(2, employee_number);
-			rs = pstmt.executeQuery();
+			irs = pstmt.executeUpdate();
 
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -146,7 +150,7 @@ public class SalaryDao {
 		}
 
 	}
-	
+
 //	2-2-3 직원 정보 삭제
 	public void delEmployee(String employee_number) {
 		try {
@@ -155,11 +159,13 @@ public class SalaryDao {
 			String query1 = "DELETE FROM labor WHERE enum = ?";
 			pstmt = conn.prepareStatement(query1);
 			pstmt.setString(1, employee_number);
-			
+			irs = pstmt.executeUpdate();
+
 			String query2 = "DELETE FROM employee WHERE enum = ?";
 			pstmt = conn.prepareStatement(query2);
 			pstmt.setString(1, employee_number);
-			
+			irs = pstmt.executeUpdate();
+
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -173,7 +179,7 @@ public class SalaryDao {
 			conn = DriverManager.getConnection(url, userid, password);
 			String calculQuery = "UPDATE labor SET sal = hourlyWage * workingHours";
 			pstmt = conn.prepareStatement(calculQuery);
-			rs = pstmt.executeQuery();
+			irs = pstmt.executeUpdate();
 		} catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
