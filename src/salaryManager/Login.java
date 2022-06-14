@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class Login extends JFrame{
@@ -57,8 +58,28 @@ public class Login extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
+				String id = t1.getText();
+				String pwd = t2.getText();
 				
+				salaryDao dao = new salaryDao();
+				int result = dao.login(id, pwd); 
+				
+				if(result == 1) {
+					if(id.equals("manager")) {
+						JOptionPane.showMessageDialog(null, "관리자로 로그인 했습니다.");
+						ManagerScreen managerScreen = new ManagerScreen();
+						dispose();
+						
+					} else {
+						JOptionPane.showMessageDialog(null, "로그인 했습니다.");
+						EmployeeDetail employeeDetail = new EmployeeDetail();
+						dispose();
+					} 
+						
+					} else if (result == 0) {
+						JOptionPane.showMessageDialog(null, "아이디와 비밀번호를 확인하세요.");
+				}
+			
 			}
 		});
 	}
