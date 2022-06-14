@@ -61,7 +61,7 @@ public class Login extends JFrame{
 				String id = t1.getText();
 				String pwd = t2.getText();
 				
-				salaryDao dao = new salaryDao();
+				SalaryDao dao = new SalaryDao();
 				int result = dao.login(id, pwd); 
 				
 				if(result == 1) {
