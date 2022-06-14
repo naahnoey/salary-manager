@@ -24,6 +24,10 @@ public class EmployeeDetail extends JFrame{
 		drawPanel();
 	}
 	
+	public EmployeeDetail() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public void drawPanel() {
 		setTitle("월급 관리 프로그램 (직원)");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
