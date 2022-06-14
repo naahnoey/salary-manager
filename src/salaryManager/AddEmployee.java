@@ -18,9 +18,11 @@ import javax.swing.SwingConstants;
 public class AddEmployee extends JDialog {
 
 	SalaryDao dao = new SalaryDao();	//데이터베이스 불러오기
+	ManagerScreen ms;	//부모창 저장 변수
 	
 	public AddEmployee(JFrame frame, String title) {
 		super(frame, title, true);
+		ms = (ManagerScreen) frame;	//부모창 저장
 		add(new InsertDetail());
 		setSize(400, 500);
 	}
@@ -97,6 +99,9 @@ public class AddEmployee extends JDialog {
 					
 					//데이터베이스에 직원 정보 입력
 					dao.insertEmployee(num, name, job, hire, account, workingHour);
+					ms.updateNumList(num);	//ManagerScreen 리스트 업데이트
+					
+					dispose();
 				}
 			});
 			okB.setBounds(165, 410, 70, 40);

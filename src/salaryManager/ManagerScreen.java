@@ -3,8 +3,13 @@ package salaryManager;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Vector;
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
 
 //사장 화면 구현
 
@@ -13,6 +18,9 @@ public class ManagerScreen extends JFrame {
 	//목록 중 하나 선택시 해당 직원 정보 출력 - EmployeeDetail 클래스 이용
 	
 	JFrame frame = this;
+	SalaryDao dao = new SalaryDao();
+	Vector<String> numV = new Vector<String>();	//직원 사번 저장 벡터
+	JList<String> numList = new JList<String>(numV);
 	
 	public ManagerScreen() {
 		setTitle("월급 관리 프로그램 (사장)");
@@ -32,20 +40,37 @@ public class ManagerScreen extends JFrame {
 	//직원 추가, 삭제, 수정 버튼
 	private class ListPanel extends JPanel {
 		//직원 목록 출력
-		//데이터베이스에서 이름과 id 가져와 JList에 아이템 제공
-		
-		//직원 이름, id 저장 리스트
-		Vector<String> nameV = new Vector<String>();
-		JList<String> nameList = new JList<String>(nameV);
+		//데이터베이스에서 사번 가져와 JList에 아이템 제공
 		
 		public ListPanel() {
 			setLayout(new BorderLayout(0, 10));
-			JLabel label = new JLabel("직원 목록");
-			nameList.setVisibleRowCount(10);	//목록에서 보여지는 직원 수
-			nameList.setFixedCellWidth(100);
-			nameList.setFixedCellHeight(30);
 			
-			//직원 추가창
+			//데이터베이스에서 직원 목록 불러와 사번 벡터에 저장
+			try {
+				ResultSet rs = dao.managerInquiry();
+				while(rs.next()) {
+					numV.add(rs.getString("enum"));
+				}
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			numList.setListData(numV);	//직원 목록으로 사용할 리스트 생성
+			
+			JLabel label = new JLabel("직원 목록");
+			numList.setVisibleRowCount(10);	//목록에서 보여지는 직원 수
+			numList.setFixedCellWidth(100);
+			numList.setFixedCellHeight(30);
+			
+			//리스트에서 직원 선택시 해당 직원 정보 출력
+			numList.addListSelectionListener(new ListSelectionListener() {
+				@Override
+				public void valueChanged(ListSelectionEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+			
+			//직원 추가 다이얼로그
 			AddEmployee addEmployee = new AddEmployee(frame, "직원 추가");
 			
 			//버튼 패널
@@ -69,9 +94,15 @@ public class ManagerScreen extends JFrame {
 			buttonP.add(corB);
 			
 			add(label, BorderLayout.NORTH);
-			add(new JScrollPane(nameList), BorderLayout.CENTER);
+			add(new JScrollPane(numList), BorderLayout.CENTER);
 			add(buttonP, BorderLayout.SOUTH);
 		}
+	}
+	
+	//Dao에서 직원 사번 받아와 numList 업데이트
+	public void updateNumList(String num) {
+		numV.add(num);
+		numList.setListData(numV);
 	}
 	
 }
