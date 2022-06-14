@@ -1,6 +1,10 @@
 package salaryManager;
 
 import java.awt.*;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
@@ -10,22 +14,37 @@ import javax.swing.border.LineBorder;
 public class EmployeeDetail extends JPanel{
 
 	//직원 객체에서 받아온 정보
+	String num = null;	//사번
 	String name = null;	//이름
-	int age = 0;	//나이
-	String day = null;	//출근 요일
-	String hour = null;	//노동 시간
-	String earlyLeave = null;	//조퇴
-	String overtime = null;	//초과근무
+	String job = null;	//직무
+	int hour = 0;	//노동 시간
+	String hire = null;	//고용일시
+	String account = null;	//계좌번호
 	int sal = 0;	//월급
+	
+	SalaryDao dao = new SalaryDao();
 	
 	public EmployeeDetail() {//아무 직원도 선택되지 않았을 때
 		this(null);
 	}
 	
-	public EmployeeDetail(String id) {
-		//데이터베이스에서 id 일치하는 직원 정보 불러와 각각의 멤버변수에 저장
-		if (id != null) {
-			
+	public EmployeeDetail(String num) {
+		//데이터베이스에서 사번 일치하는 직원 정보 불러와 각각의 멤버변수에 저장
+		if (num != null) {
+			ResultSet rs = dao.employeeInquiry(num);
+			try {
+				rs.next();
+				num = rs.getString("enum");
+				name = rs.getString("ename");
+				job = rs.getString("job");
+				hour = rs.getInt("workingHours");
+				hire = rs.getString("hire");
+				account = rs.getString("account");
+				sal = rs.getInt("sal");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		drawPanel();
@@ -43,7 +62,7 @@ public class EmployeeDetail extends JPanel{
 		InfoEmployee infoEmployee = new InfoEmployee();
 		infoEmployee.setBounds(200, 30, 450, 240);
 		
-		//직원 상세정보 - 조퇴, 초과근무 기록
+		//직원 상세정보 - 고용일시, 계좌번호
 		InfoEmployee2 infoEmployee2 = new InfoEmployee2();
 		infoEmployee2.setBounds(30, 270, 600, 100);
 		
@@ -75,46 +94,46 @@ public class EmployeeDetail extends JPanel{
 			
 			setLayout(null);
 			
-			//이름, 나이, 출근 요일, 노동 시간
+			//사번, 이름, 직무, 노동 시간
 			JPanel ep = new JPanel();
 			ep.setLayout(new GridLayout(0, 1, 0, -1));
+			JLabel numL = new JLabel("사번 ", SwingConstants.RIGHT);
 			JLabel nameL = new JLabel("이름 ", SwingConstants.RIGHT);
-			JLabel ageL = new JLabel("나이 ", SwingConstants.RIGHT);
-			JLabel dayL = new JLabel("출근 요일 ", SwingConstants.RIGHT);
+			JLabel jobL = new JLabel("직무 ", SwingConstants.RIGHT);
 			JLabel hourL = new JLabel("노동 시간 ", SwingConstants.RIGHT);
 			
 			//폰트 설정
-			nameL.setFont(font);	
-			ageL.setFont(font);
-			dayL.setFont(font);
+			numL.setFont(font);
+			nameL.setFont(font);
+			jobL.setFont(font);
 			hourL.setFont(font);
 			
 			//테두리 설정
+			numL.setBorder(lb);
 			nameL.setBorder(lb);	
-			ageL.setBorder(lb);
-			dayL.setBorder(lb);
+			jobL.setBorder(lb);
 			hourL.setBorder(lb);
-			ep.add(nameL);	ep.add(ageL);	ep.add(dayL);	ep.add(hourL);
+			ep.add(numL);	ep.add(nameL);	ep.add(jobL);	ep.add(hourL);
 			ep.setBounds(0, 0, 80, 200);
 			
 			//각 목록에 대한 직원 상세 정보
 			JPanel infoP = new JPanel();
 			infoP.setLayout(new GridLayout(0, 1, 0, -1));
+			JLabel infoNumL = new JLabel(" " + num);
 			JLabel infoNameL = new JLabel(" " + name);
-			JLabel infoAgeL = new JLabel(" " + age);
-			JLabel infoDayL = new JLabel(" " + day);
+			JLabel infoJobL = new JLabel(" " + job);
 			JLabel infoHourL = new JLabel(" " + hour);
+			infoNumL.setFont(font);
 			infoNameL.setFont(font);
-			infoAgeL.setFont(font);
-			infoDayL.setFont(font);
+			infoJobL.setFont(font);
 			infoHourL.setFont(font);
 			
+			infoNumL.setBorder(lb);
 			infoNameL.setBorder(lb);	
-			infoAgeL.setBorder(lb);
-			infoDayL.setBorder(lb);
+			infoJobL.setBorder(lb);
 			infoHourL.setBorder(lb);
 			
-			infoP.add(infoNameL);	infoP.add(infoAgeL);	infoP.add(infoDayL);	infoP.add(infoHourL);
+			infoP.add(infoNumL);	infoP.add(infoNameL);	infoP.add(infoJobL);	infoP.add(infoHourL);
 			infoP.setBounds(80, 0, 350, 200);
 			
 			add(ep);
@@ -123,7 +142,7 @@ public class EmployeeDetail extends JPanel{
 		
 	}	//end infoEmployee
 	
-	//직원 상세정보 - 조퇴, 초과근무
+	//직원 상세정보 - 고용일시, 계좌번호
 	class InfoEmployee2 extends JPanel {
 		
 		public InfoEmployee2() {
@@ -135,31 +154,31 @@ public class EmployeeDetail extends JPanel{
 			//조퇴, 초과근무
 			JPanel ep = new JPanel();
 			ep.setLayout(new GridLayout(0, 1, 0, -1));
-			JLabel elL = new JLabel("조퇴 ", SwingConstants.RIGHT);
-			JLabel otL = new JLabel("초과근무 ", SwingConstants.RIGHT);
+			JLabel hireL = new JLabel("고용일시 ", SwingConstants.RIGHT);
+			JLabel accountL = new JLabel("계좌번호 ", SwingConstants.RIGHT);
 			
 			//폰트 설정
-			elL.setFont(font);	
-			otL.setFont(font);
+			hireL.setFont(font);	
+			accountL.setFont(font);
 			
 			//테두리 설정
-			elL.setBorder(lb);	
-			otL.setBorder(lb);
-			ep.add(elL);	ep.add(otL);
+			hireL.setBorder(lb);	
+			accountL.setBorder(lb);
+			ep.add(hireL);	ep.add(accountL);
 			ep.setBounds(0, 0, 80, 100);
 			
 			//각 목록에 대한 직원 상세 정보
 			JPanel infoP = new JPanel();
 			infoP.setLayout(new GridLayout(0, 1, 0, -1));
-			JLabel infoEarlyLeaveL = new JLabel(" " + earlyLeave);
-			JLabel infoOvertimeL = new JLabel(" " + overtime);
-			infoEarlyLeaveL.setFont(font);
-			infoOvertimeL.setFont(font);
+			JLabel infoHireL = new JLabel(" " + hire);
+			JLabel infoAccountL = new JLabel(" " + account);
+			infoHireL.setFont(font);
+			infoAccountL.setFont(font);
 			
-			infoEarlyLeaveL.setBorder(lb);	
-			infoOvertimeL.setBorder(lb);
+			infoHireL.setBorder(lb);	
+			infoAccountL.setBorder(lb);
 			
-			infoP.add(infoEarlyLeaveL);	infoP.add(infoOvertimeL);
+			infoP.add(infoHireL);	infoP.add(infoAccountL);
 			infoP.setBounds(80, 0, 520, 100);
 			
 			add(ep);

@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -22,16 +23,19 @@ public class ManagerScreen extends JFrame {
 	Vector<String> numV = new Vector<String>();	//직원 사번 저장 벡터
 	JList<String> numList = new JList<String>(numV);
 	
+	Container c = getContentPane();	//ManagerScreen 창
+	EmployeeDetail ed = new EmployeeDetail();
+	
 	public ManagerScreen() {
 		setTitle("월급 관리 프로그램 (사장)");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(850, 550);
 		setLocationRelativeTo(this);
 		
-		setLayout(new BorderLayout());	//레이아웃 설정
+		c.setLayout(new BorderLayout());	//레이아웃 설정
 		
-		add(new ListPanel(), BorderLayout.WEST);
-		add(new EmployeeDetail(), BorderLayout.CENTER);
+		c.add(new ListPanel(), BorderLayout.WEST);
+		c.add(ed, BorderLayout.CENTER);
 		
 		setVisible(true);
 	}
@@ -65,8 +69,13 @@ public class ManagerScreen extends JFrame {
 			numList.addListSelectionListener(new ListSelectionListener() {
 				@Override
 				public void valueChanged(ListSelectionEvent e) {
-					// TODO Auto-generated method stub
+					c.remove(ed);	//이전 직원 상세 정보 없애기
 					
+					String num = numList.getSelectedValue();	//클릭된 사번
+					ed = new EmployeeDetail(num);	//해당 직원의 상세 정보
+					
+					c.add(ed, BorderLayout.CENTER);
+					c.repaint();
 				}
 			});
 			
