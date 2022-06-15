@@ -37,7 +37,7 @@ public class EmployeeDetail extends JPanel{
 			ResultSet rs = dao.employeeInquiry(num);
 			try {
 				rs.next();
-				num = rs.getString("enum");
+				this.num = rs.getString("enum");
 				name = rs.getString("ename");
 				job = rs.getString("job");
 				hour = rs.getInt("workingHours");
