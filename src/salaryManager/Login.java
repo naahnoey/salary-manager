@@ -72,7 +72,7 @@ public class Login extends JFrame{
 						
 					} else {
 						JOptionPane.showMessageDialog(null, "로그인 했습니다.");
-						EmployeeDetail employeeDetail = new EmployeeDetail();
+						EmployeeScreen employeeScreen = new EmployeeScreen(id);
 						dispose();
 					} 
 						
