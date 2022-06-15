@@ -1,6 +1,9 @@
 package salaryManager;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -74,6 +77,14 @@ public class EmployeeDetail extends JPanel{
 		//·Î±×¾Æ¿ô ¹öÆ°
 		JButton logoutB = new JButton("·Î±×¾Æ¿ô");
 		logoutB.setBounds(290, 450, 100, 40);
+		
+		logoutB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	((Window) getRootPane().getParent()).dispose();
+            	new Login();
+            }
+        });
 		
 		
 		add(employeeImage);
